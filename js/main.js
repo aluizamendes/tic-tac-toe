@@ -20,8 +20,32 @@ function changePlayerInfo() {
     infoElement.innerText = isPlaying == "circle" ? "It's Circle's turn." : "It's Cross' turn."
 }
 
+// adiciona cor de fundo destacada pra cada celula especificada do tabuleiro
 function higlightCells(cell) {
     board[cell].style.backgroundColor = "lightgrey"
+}
+
+function resetGameBoard() {
+    setTimeout(() => {
+        const boardArray = [...board]     
+
+        // pra cada celula do tabuleiro
+        boardArray.forEach((cell) => {
+
+            // enquanto houver um elemento filho na cell, remover
+            while (cell.firstChild) {
+                cell.removeChild(cell.firstChild)
+            }
+
+            winner = ""
+            infoElement.innerText = `Cross goes first.`
+            cell.style.backgroundColor = "white"
+            
+            // cross sempre começa a jogada
+            isPlaying = "cross"
+        })
+        
+    }, 1500);
 }
 
 function checkWin() {
@@ -44,12 +68,14 @@ function checkWin() {
             winner = "circle"
 
             array.forEach((cell) => { higlightCells(cell) })     
+            resetGameBoard()
 
         } else if (crossWins) {
             infoElement.innerText = "🎉 Cross Wins! 🎉"
             winner = "cross"
 
             array.forEach((cell) => { higlightCells(cell) })
+            resetGameBoard()
         }
     })
 }
@@ -63,6 +89,7 @@ function checkTie() {
     // se o board estiver cheio/completo e não houver vencedor, é um empate
     if (isBoardFull && winner == "") {
         infoElement.innerText = "Tie!!"
+        resetGameBoard()
     }
 }
 
