@@ -1,11 +1,20 @@
 const gameBoardElement = document.getElementById("board")
 const board = document.querySelectorAll("[data-tile]")
 const infoElement = document.getElementById("info")
+const circlePointsElement = document.getElementById("circlePoints")
+const crossPointsElement = document.getElementById("crossPoints")
 
 // GLOBAL
 let isPlaying = "cross"
 infoElement.innerText = `Cross goes first.`
 let winner = ""
+let crossPoints = 0
+let circlePoints = 0
+
+function updateScore() {
+    circlePointsElement.innerText = `O: ${circlePoints}`
+    crossPointsElement.innerText = `X: ${crossPoints}`  
+}
 
 function changePlayerTurn() {
     if (isPlaying == "cross") {
@@ -66,6 +75,7 @@ function checkWin() {
         if (circleWins) {
             infoElement.innerText = "🎉 Circle Wins! 🎉"
             winner = "circle"
+            circlePoints += 1
 
             array.forEach((cell) => { higlightCells(cell) })     
             resetGameBoard()
@@ -73,11 +83,13 @@ function checkWin() {
         } else if (crossWins) {
             infoElement.innerText = "🎉 Cross Wins! 🎉"
             winner = "cross"
+            crossPoints += 1
 
             array.forEach((cell) => { higlightCells(cell) })
             resetGameBoard()
         }
     })
+    updateScore()
 }
 
 function checkTie() {
